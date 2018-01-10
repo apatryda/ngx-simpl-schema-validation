@@ -18,8 +18,9 @@ interface ISimpleSchemaValidatorFactoryErrors {
 }
 
 export class SimpleSchemaValidatorFactory {
-  private context;
+  private context: any;
   private errors: ISimpleSchemaValidatorFactoryErrors = {};
+  private form: FormGroup;
   private formValueChangesSubscription: Subscription;
 
   constructor(
@@ -28,7 +29,7 @@ export class SimpleSchemaValidatorFactory {
     this.context = schema.newContext();
   }
 
-  connectForm(form: AbstractControl) {
+  connectForm(form: FormGroup) {
     const onValueChanges = (value) => {
       this.context.validate(this.context.clean(value));
       const validationErrors = this.context.validationErrors();
@@ -68,6 +69,7 @@ export class SimpleSchemaValidatorFactory {
     };
 
     this.disconnectForm();
+    this.form = form;
     this.formValueChangesSubscription = form.valueChanges
       .startWith(form.value)
       .subscribe(onValueChanges)
@@ -107,18 +109,21 @@ export class SimpleSchemaValidatorFactory {
   }
 
   disconnectForm() {
+    this.form = null;
     if (this.formValueChangesSubscription) {
       this.formValueChangesSubscription.unsubscribe();
     }
   }
 
-  hasErrors(path: string, form: FormGroup): boolean {
-    const control: AbstractControl = form.get(path);
-    const errors = Object.keys(control.errors);
-    return errors.reduce((hasError, error) => hasError || control.hasError(error), false);
+  getFirstError(path: string): string {
+    return SimpleSchemaValidatorFactory.getFirstError(this.form, path);
   }
 
-  getFirstError(path: string, form: FormGroup): string {
+  hasErrors(path: string): boolean {
+    return SimpleSchemaValidatorFactory.hasErrors(this.form, path);
+  }
+
+  static getFirstError(form: FormGroup, path: string): string {
     const control: AbstractControl = form.get(path);
     const errors = Object
       .keys(control.errors)
@@ -130,5 +135,11 @@ export class SimpleSchemaValidatorFactory {
       ? control.getError(errors[0])
       : null
     ;
+  }
+
+  static hasErrors(form: FormGroup, path: string): boolean {
+    const control: AbstractControl = form.get(path);
+    const errors = Object.keys(control.errors);
+    return errors.reduce((hasError, error) => hasError || control.hasError(error), false);
   }
 }
