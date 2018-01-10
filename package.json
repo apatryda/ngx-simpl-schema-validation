@@ -1,0 +1,35 @@
+{
+  "name": "ngx-simpl-schema-validation",
+  "version": "0.1.0",
+  "description": "Simple Schema validator factory for Angular 4.3+",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "node_modules/.bin/tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/apatryda/ngx-simpl-schema-validation.git"
+  },
+  "keywords": [
+    "Angular",
+    "Meteor",
+    "Validator"
+  ],
+  "author": "Artur Nerkowski",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/apatryda/ngx-simpl-schema-validation/issues"
+  },
+  "homepage": "https://github.com/apatryda/ngx-simpl-schema-validation#readme",
+  "devDependencies": {
+    "typescript": ">=2.3.0"
+  },
+  "dependencies": {
+    "@angular/core": ">=4.3.0 || >=5.0.0",
+    "@angular/forms": ">=4.3.0 || >=5.0.0",
+    "rxjs": ">=5.4.0",
+    "simpl-schema": ">=1.4.0"
+  }
+}
