@@ -115,31 +115,60 @@ export class SimpleSchemaValidatorFactory {
     }
   }
 
-  getFirstError(path: string): string {
-    return SimpleSchemaValidatorFactory.getFirstError(this.form, path);
+  getErrorMessages(path?: string): string[] {
+    return SimpleSchemaValidatorFactory.getErrorMessages(this.form, path);
   }
 
-  hasErrors(path: string): boolean {
+  getFirstErrorMessage(path?: string): string {
+    return SimpleSchemaValidatorFactory.getFirstErrorMessage(this.form, path);
+  }
+
+  hasErrorMessages(path?: string): boolean {
+    return SimpleSchemaValidatorFactory.hasErrorMessages(this.form, path);
+  }
+
+  hasErrors(path?: string): boolean {
     return SimpleSchemaValidatorFactory.hasErrors(this.form, path);
   }
 
-  static getFirstError(form: FormGroup, path: string): string {
-    const control: AbstractControl = form.get(path);
-    const errors = Object
-      .keys(control.errors)
-      .filter(error =>
-        typeof control.getError(error) === 'string'
-      )
-    ;
-    return errors.length
-      ? control.getError(errors[0])
+  static getErrorMessages(form: FormGroup, path?: string): string[] {
+    if (!form) {
+      return [];
+    }
+    const control: AbstractControl = path ? form.get(path) : form;
+    const errorCodes = control.errors ? Object.keys(control.errors) : [];
+    const errorMessages = errorCodes.filter(error =>
+      typeof control.getError(error) === 'string'
+    );
+    return errorMessages;
+  }
+
+  static getFirstErrorMessage(form: FormGroup, path?: string): string | null {
+    if (!form) {
+      return null;
+    }
+    const control: AbstractControl = path ? form.get(path) : form;
+    const errorMessages = this.getErrorMessages(form, path);
+    return errorMessages.length
+      ? control.getError(errorMessages[0])
       : null
     ;
   }
 
-  static hasErrors(form: FormGroup, path: string): boolean {
-    const control: AbstractControl = form.get(path);
-    const errors = Object.keys(control.errors);
-    return errors.reduce((hasError, error) => hasError || control.hasError(error), false);
+  static hasErrorMessages(form: FormGroup, path?: string): boolean {
+    if (!form) {
+      return false;
+    }
+    const errorMessages = this.getErrorMessages(form, path);
+    return !!errorMessages.length;
+  }
+
+  static hasErrors(form: FormGroup, path?: string): boolean {
+    if (!form) {
+      return false;
+    }
+    const control: AbstractControl = path ? form.get(path) : form;
+    const errorCodes = control.errors ? Object.keys(control.errors) : [];
+    return errorCodes.reduce((hasError, errorCode) => hasError || control.hasError(errorCode), false);
   }
 }

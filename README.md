@@ -8,9 +8,9 @@ Simple Schema validator factory for Angular 4.3+
 ```html
 <form [ngForm]="form">
   <input type="text" formControlName="name">
-  <p class="error" *ngIf="vf.hasErrors('name')">{{vf.getFirstError('name')}}</p>
+  <p class="error" *ngIf="vf.hasErrorMessages('name')">{{vf.getFirstErrorMessage('name')}}</p>
   <input type="text" formControlName="count">
-  <p class="error" *ngIf="vf.hasErrors('count')">{{vf.getFirstError('count')}}</p>
+  <p class="error" *ngIf="vf.hasErrorMessages('count')">{{vf.getFirstErrorMessage('count')}}</p>
   <input type="submit" value="Submit">
 </form>
 ```
