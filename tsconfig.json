@@ -24,6 +24,7 @@
     "**/*.spec.ts"
   ],
   "include": [
+    "declarations.d.ts",
     "src/**/*"
   ]
 }

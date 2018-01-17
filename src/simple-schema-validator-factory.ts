@@ -63,7 +63,7 @@ export class SimpleSchemaValidatorFactory {
         });
 
         if (pathValidityChanged) {
-          form.get(path).updateValueAndValidity({ onlySelf: true });
+          form.get(path).updateValueAndValidity({ emitEvent: false });
         }
       });
     };

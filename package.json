@@ -1,12 +1,12 @@
 {
   "name": "ngx-simpl-schema-validation",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Simple Schema validator factory for Angular 4.3+",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "node_modules/.bin/tsc",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node_modules/.bin/karma start"
   },
   "repository": {
     "type": "git",
@@ -24,12 +24,36 @@
   },
   "homepage": "https://github.com/apatryda/ngx-simpl-schema-validation#readme",
   "devDependencies": {
-    "typescript": ">=2.3.0"
+    "@angular/common": "4.3.6",
+    "@angular/compiler": "4.3.6",
+    "@angular/compiler-cli": "4.3.6",
+    "@angular/core": "4.3.6",
+    "@angular/forms": "4.3.6",
+    "@angular/platform-browser": "4.3.6",
+    "@angular/platform-browser-dynamic": "4.3.6",
+    "@types/chai": "4.1.0",
+    "@types/chai-spies": "0.0.0",
+    "@types/mocha": "^2.2.46",
+    "chai": "4.1.2",
+    "chai-spies": "1.0.0",
+    "karma": "2.0.0",
+    "karma-mocha": "1.3.0",
+    "karma-typescript": "3.0.9",
+    "karma-typescript-angular2-transform": "1.0.2",
+    "mocha": "4.1.0",
+    "rxjs": "5.5.2",
+    "simpl-schema": "^1.4.1",
+    "typescript": "2.4.2",
+    "zone.js": "0.8.17"
   },
-  "dependencies": {
+  "dependencies": {},
+  "peerDependencies": {
+    "@angular/common": ">=4.3.0 || >=5.0.0",
+    "@angular/compiler": ">=4.3.0 || >=5.0.0",
     "@angular/core": ">=4.3.0 || >=5.0.0",
     "@angular/forms": ">=4.3.0 || >=5.0.0",
     "rxjs": ">=5.4.0",
-    "simpl-schema": ">=1.4.0"
+    "simpl-schema": ">=1.4.0",
+    "typescript": ">=2.3.0"
   }
 }
