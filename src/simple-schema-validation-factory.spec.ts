@@ -88,4 +88,24 @@ describe('SimpleSchemaValidationFactory', function() {
       });
     });
   });
+
+  describe('connected to a form with a valid path `a`', () => {
+    const schema = new SimpleSchema({
+      a: String,
+    }, {
+      clean: {
+        removeEmptyStrings: true,
+      },
+    });
+    const vf = new SimpleSchemaValidatorFactory(schema);
+    const form = new FormGroup({
+      a: new FormControl('valid ', vf.createControlValidator('a')),
+    });
+    vf.connectForm(form);
+
+    it('should not fail with structure changed so that path `a` does not exist', (done) => {
+      form.removeControl('a');
+      setTimeout(done, 100);
+    });
+  });
 });

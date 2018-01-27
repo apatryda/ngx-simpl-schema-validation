@@ -36,7 +36,7 @@ export class SimpleSchemaValidatorFactory {
       const oldErrors = this.errors;
       const newErrors = validationErrors.reduce(
         (errors, { name: path, type }) => Object.assign(errors, {
-          [path]: Object.assign({}, errors[path], {
+          [path]: Object.assign(errors[path] || {}, {
             [type]: this.context.keyErrorMessage(path),
           }),
         }),
@@ -63,7 +63,10 @@ export class SimpleSchemaValidatorFactory {
         });
 
         if (pathValidityChanged) {
-          form.get(path).updateValueAndValidity({ emitEvent: false });
+          const control = form.get(path);
+          if (control) {
+            control.updateValueAndValidity({ emitEvent: false });
+          }
         }
       });
     };
@@ -110,6 +113,7 @@ export class SimpleSchemaValidatorFactory {
 
   disconnectForm() {
     this.form = null;
+    this.resetErrors();
     if (this.formValueChangesSubscription) {
       this.formValueChangesSubscription.unsubscribe();
     }
@@ -131,12 +135,16 @@ export class SimpleSchemaValidatorFactory {
     return SimpleSchemaValidatorFactory.hasErrors(this.form, path);
   }
 
+  resetErrors() {
+    this.errors = {};
+  }
+
   static getErrorMessages(form: FormGroup, path?: string): string[] {
     if (!form) {
       return [];
     }
     const control: AbstractControl = path ? form.get(path) : form;
-    const errorCodes = control.errors ? Object.keys(control.errors) : [];
+    const errorCodes = control && control.errors ? Object.keys(control.errors) : [];
     const errorMessages = errorCodes.filter(error =>
       typeof control.getError(error) === 'string'
     );
@@ -168,7 +176,7 @@ export class SimpleSchemaValidatorFactory {
       return false;
     }
     const control: AbstractControl = path ? form.get(path) : form;
-    const errorCodes = control.errors ? Object.keys(control.errors) : [];
+    const errorCodes = control && control.errors ? Object.keys(control.errors) : [];
     return errorCodes.reduce((hasError, errorCode) => hasError || control.hasError(errorCode), false);
   }
 }
