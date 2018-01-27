@@ -1,6 +1,6 @@
 {
   "name": "ngx-simpl-schema-validation",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Simple Schema validator factory for Angular 4.3+",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -33,7 +33,7 @@
     "@angular/platform-browser-dynamic": "4.3.6",
     "@types/chai": "4.1.0",
     "@types/chai-spies": "0.0.0",
-    "@types/mocha": "^2.2.46",
+    "@types/mocha": "2.2.46",
     "chai": "4.1.2",
     "chai-spies": "1.0.0",
     "karma": "2.0.0",
@@ -44,7 +44,7 @@
     "mocha": "4.1.0",
     "puppeteer": "1.0.0",
     "rxjs": "5.5.2",
-    "simpl-schema": "^1.4.1",
+    "simpl-schema": "1.4.1",
     "typescript": "2.4.2",
     "zone.js": "0.8.17"
   },

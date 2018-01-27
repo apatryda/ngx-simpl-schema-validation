@@ -4,7 +4,6 @@ module.exports = function(config) {
   config.set({
     browsers: ['ChromeHeadless'],
     files: [
-      "declarations.d.ts",
       'src/**/*.ts',
     ],
     frameworks: ['mocha', 'karma-typescript'],
