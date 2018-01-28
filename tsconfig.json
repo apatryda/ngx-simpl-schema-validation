@@ -5,6 +5,7 @@
   "compileOnSave": false,
   "compilerOptions": {
     "declaration": true,
+    "downlevelIteration": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "lib": [
@@ -13,6 +14,7 @@
     ],
     "module": "commonjs",
     "moduleResolution": "node",
+    "noImplicitAny": true,
     "outDir": "dist",
     "sourceMap": true,
     "target": "es5",

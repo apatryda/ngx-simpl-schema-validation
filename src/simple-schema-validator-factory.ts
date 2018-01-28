@@ -30,12 +30,18 @@ export class SimpleSchemaValidatorFactory {
   }
 
   connectForm(form: FormGroup) {
-    const onValueChanges = (value) => {
+    const onValueChanges = (value: any) => {
       this.context.validate(this.context.clean(value));
       const validationErrors = this.context.validationErrors();
       const oldErrors = this.errors;
       const newErrors = validationErrors.reduce(
-        (errors, { name: path, type }) => Object.assign(errors, {
+        (
+          errors: { [type: string]: any },
+          { name: path, type }: {
+            name: string;
+            type: string;
+          },
+        ) => Object.assign(errors, {
           [path]: Object.assign(errors[path] || {}, {
             [type]: this.context.keyErrorMessage(path),
           }),
@@ -50,22 +56,26 @@ export class SimpleSchemaValidatorFactory {
       ]);
 
       paths.forEach((path) => {
-        const oldPathErrors = oldErrors[path] || {};
+        const control = form.get(path);
+        if (!control) {
+          return;
+        }
+
+        const oldPathErrors = control.errors || {};
         const newPathErrors = newErrors[path] || {};
-        const types = new Set([
-          ...Object.keys(oldPathErrors),
-          ...Object.keys(newPathErrors),
+
+        const oldErrorTypes = Object.keys(oldPathErrors);
+        const newErrorTypes = Object.keys(newPathErrors);
+
+        const typeSet = new Set([
+          ...oldErrorTypes,
+          ...newErrorTypes,
         ]);
 
-        let pathValidityChanged = false;
-        types.forEach((type) => {
-          pathValidityChanged = pathValidityChanged || newPathErrors[type] !== oldPathErrors[type];
-        });
-
-        if (pathValidityChanged) {
-          const control = form.get(path);
-          if (control) {
+        for (let type of typeSet) {
+          if (newPathErrors[type] !== oldPathErrors[type]) {
             control.updateValueAndValidity({ emitEvent: false });
+            return;
           }
         }
       });
@@ -79,7 +89,25 @@ export class SimpleSchemaValidatorFactory {
     ;
   }
 
-  connectControl(control: AbstractControl, path?: string) {
+  connectControl({
+    path,
+    onlySelf = false,
+  }: {
+    path?: string;
+    onlySelf?: boolean;
+  } = {}): void {
+    if (!this.form) {
+      throw new Error('No form connected.');
+    }
+
+    const control = path
+      ? this.form.get(path)
+      : this.form
+    ;
+    if (!control) {
+      throw new Error(`Path '${path}' was not found in form.`);
+    }
+
     const validator = this.createControlValidator(path);
     if (validator) {
       control.setValidators(validator);
@@ -87,18 +115,22 @@ export class SimpleSchemaValidatorFactory {
       control.clearValidators();
     }
 
+    if (onlySelf) {
+      return;
+    }
+
     if (control instanceof FormArray) {
       const { controls } = control;
       controls.forEach((childControl, key) => {
         const childPath = path ? `${path}.${key}` : `${key}`;
-        this.connectControl(childControl, childPath);
+        this.connectControl({ path: childPath });
       });
     } else if (control instanceof FormGroup) {
       const { controls } = control;
       Object.keys(controls).forEach((key) => {
         const childControl = controls[key];
         const childPath = path ? `${path}.${key}` : key;
-        this.connectControl(childControl, childPath);
+        this.connectControl({ path: childPath });
       });
     }
   }
@@ -112,11 +144,11 @@ export class SimpleSchemaValidatorFactory {
   }
 
   disconnectForm() {
-    this.form = null;
-    this.resetErrors();
     if (this.formValueChangesSubscription) {
       this.formValueChangesSubscription.unsubscribe();
     }
+    this.form = null;
+    this.resetErrors();
   }
 
   getErrorMessages(path?: string): string[] {
