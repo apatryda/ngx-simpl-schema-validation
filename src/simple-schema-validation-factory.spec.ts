@@ -1,6 +1,3 @@
-/// <reference types="mocha" />
-/// <reference path="../declarations.d.ts" />
-
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import * as chai from 'chai';
 import spies = require('chai-spies');
@@ -30,18 +27,18 @@ describe('SimpleSchemaValidationFactory', function() {
     });
 
     describe('when set with an invalid value', function() {
-      let changedStatus;
-      let changedValue;
-      const statusChangesSpy = spy((status) => {
+      let changedStatus: any;
+      let changedValue: any;
+      const statusChangesSpy = spy((status: any) => {
         changedStatus = status;
       });
-      const valueChangesSpy = spy((value) => {
+      const valueChangesSpy = spy((value: any) => {
         changedValue = value;
       });
       form.statusChanges.subscribe(statusChangesSpy);
       form.valueChanges.subscribe(valueChangesSpy);
-      vf.connectControl(form);
       vf.connectForm(form);
+      vf.connectControl();
 
       form.setValue({ name: '' });
 

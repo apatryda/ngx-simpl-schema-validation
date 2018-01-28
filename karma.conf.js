@@ -11,12 +11,31 @@ module.exports = function(config) {
       bundlerOptions: {
         entrypoints: /\.spec\.ts$/,
         transforms: [
-          require("karma-typescript-angular2-transform"),
+          require('karma-typescript-angular2-transform'),
         ]
       },
       compilerOptions: {
-        lib: ["es2017", "dom"],
+        declaration: true,
+        downlevelIteration: true,
+        emitDecoratorMetadata: true,
+        experimentalDecorators: true,
+        lib: [
+          'es2017',
+          'dom'
+        ],
+        module: 'commonjs',
+        moduleResolution: 'node',
+        noImplicitAny: true,
+        sourceMap: true,
+        target: 'es5',
+        typeRoots: [
+          'node_modules/@types'
+        ]
       },
+      include: [
+        'declarations.d.ts',
+        'src/**/*',
+      ],
     },
     preprocessors: { '**/*.ts': 'karma-typescript' },
     reporters: ['progress', 'karma-typescript'],

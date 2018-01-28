@@ -52,8 +52,8 @@ export class TestFormComponent {
       }), {})
     ;
     this.form = fb.group(formDef);
-    this.vf.connectControl(this.form);
     this.vf.connectForm(this.form);
+    this.vf.connectControl();
   }
 }
 ```
