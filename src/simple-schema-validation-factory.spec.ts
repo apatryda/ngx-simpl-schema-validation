@@ -1,8 +1,8 @@
-import { FormArray, FormControl, FormGroup } from '@angular/forms';
+import {FormControl, FormGroup} from '@angular/forms';
 import * as chai from 'chai';
-import spies = require('chai-spies');
 import SimpleSchema from 'simpl-schema';
-import { SimpleSchemaValidatorFactory } from './simple-schema-validator-factory';
+import {SimpleSchemaValidatorFactory} from './simple-schema-validator-factory';
+import spies = require('chai-spies');
 
 chai.use(spies);
 
