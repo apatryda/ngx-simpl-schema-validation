@@ -1,15 +1,6 @@
-import 'rxjs/add/operator/startWith';
-import {
-  AbstractControl,
-  FormArray,
-  FormControl,
-  FormGroup,
-  ValidationErrors,
-  ValidatorFn,
-} from '@angular/forms';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
-import SimpleSchema from 'simpl-schema';
+import {AbstractControl, FormArray, FormGroup, ValidatorFn,} from '@angular/forms';
+import {Subscription} from "rxjs";
+import {startWith} from "rxjs/operators";
 
 interface ISimpleSchemaValidatorFactoryErrors {
   [path: string]: {
@@ -83,8 +74,7 @@ export class SimpleSchemaValidatorFactory {
 
     this.disconnectForm();
     this.form = form;
-    this.formValueChangesSubscription = form.valueChanges
-      .startWith(form.value)
+    this.formValueChangesSubscription = form.valueChanges.pipe(startWith(form.value))
       .subscribe(onValueChanges)
     ;
   }
